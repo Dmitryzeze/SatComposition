@@ -17,7 +17,7 @@ object GameRepositoryImpl : GameRepository {
         val rightAnswer = sum-visibleNumber
         options.add(rightAnswer)
         while(options.size<countOfOption){
-            options.add(Random.nextInt(MIN_SUM_VALUE,sum))
+            options.add(Random.nextInt(MIN_ANSWER_VALUE,sum))
         }
         return Question(sum,visibleNumber, options.toList())
     }
