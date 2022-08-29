@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.satcomposition.databinding.FragmentGameResultBinding
+import com.example.satcomposition.R
 import com.example.satcomposition.databinding.FragmentWelcomeBinding
 
 class WelcomeFragment : Fragment() {
@@ -22,7 +22,16 @@ class WelcomeFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.buttonUnderstand.setOnClickListener {
+            launchChooseLevelFragment()
+        }
 
+    }
+    private fun launchChooseLevelFragment(){
+        requireActivity().supportFragmentManager.beginTransaction()
+            .addToBackStack(FragmentChooseLevel.NAME)
+            .replace(R.id.main_container, FragmentChooseLevel.newInstance())
+            .commit()
     }
 
     override fun onDestroyView() {
