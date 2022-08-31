@@ -50,7 +50,7 @@ class FragmentGame: Fragment() {
         super.onDestroyView()
         _binding=null
     }
-    private fun launchFragmentGameResult(result: GameRelablesult) {
+    private fun launchFragmentGameResult(result: GameResult) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, FragmentGameResult.newInstance(result))
             .commit()
