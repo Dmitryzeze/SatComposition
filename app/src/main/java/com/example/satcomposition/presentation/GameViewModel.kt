@@ -5,9 +5,9 @@ import android.os.CountDownTimer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.satcomposition.R
 import com.example.satcomposition.data.GameRepositoryImpl
+import com.example.satcomposition.domain.entity.GameResult
 import com.example.satcomposition.domain.entity.GameSettings
 import com.example.satcomposition.domain.entity.Level
 import com.example.satcomposition.domain.entity.Question
@@ -22,6 +22,14 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private var countOfQuestions: Int = 0
 
     private val context = application
+
+    private val _minPercent = MutableLiveData<Int>()
+    val minPercent: LiveData<Int>
+        get() = _minPercent
+
+    private val _gameResult = MutableLiveData<GameResult>()
+    val gameResult: LiveData<GameResult>
+        get() = _gameResult
 
     private var _enoughPercentOfRightAnswer = MutableLiveData<Boolean>()
     val enoughPercentOfRightAnswer: LiveData<Boolean>
@@ -122,7 +130,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun finishGame() {
-        TODO()
+        _gameResult.value = GameResult(
+            winner = enoughCountOfRightAnswer.value == true &&
+                    enoughPercentOfRightAnswer.value == true,
+            countOfRightAnswer,
+            countOfQuestions,
+            gameSettings
+        )
     }
 
     override fun onCleared() {
@@ -133,6 +147,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private fun getGameSettings(level: Level) {
         this.level = level
         this.gameSettings = getGameSettingsInteractor(level)
+        _minPercent.value = gameSettings.minPercentOfRightAnswer
     }
 
     companion object {
