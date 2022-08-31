@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.example.satcomposition.R
 import com.example.satcomposition.databinding.FragmentGameResultBinding
 import com.example.satcomposition.domain.entity.GameResult
 
@@ -32,14 +34,26 @@ class FragmentGameResult :Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true){
+        binding.buttonRetry.setOnClickListener {
+            launchChooseLevelFragment()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                retryGame()
+//                retryGame()
+                launchChooseLevelFragment()
             }
-        })   }
-
+        })
+    }
+    private fun launchChooseLevelFragment(){
+        requireActivity().supportFragmentManager.beginTransaction()
+            .addToBackStack(FragmentChooseLevel.NAME)
+            .replace(R.id.main_container, FragmentChooseLevel.newInstance())
+            .commit()
+    }
     private fun retryGame(){
-        requireActivity().supportFragmentManager.popBackStack(FragmentChooseLevel.NAME,0)
+        requireActivity().supportFragmentManager.popBackStack(FragmentChooseLevel.NAME,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
     override fun onDestroyView() {
@@ -47,14 +61,16 @@ class FragmentGameResult :Fragment() {
         _binding=null
     }
     private fun parseArgs() {
-        result = requireArguments().getSerializable(FragmentGameResult.GAME_RESULT) as GameResult
+         requireArguments().getParcelable<GameResult>(GAME_RESULT)?.let{
+             result = it
+        }
     }
     companion object {
         private const val GAME_RESULT = "result"
         fun newInstance(result: GameResult): FragmentGameResult{
             return FragmentGameResult().apply {
                 arguments = Bundle().apply {
-                    putSerializable(GAME_RESULT, result)
+                    putParcelable(GAME_RESULT, result)
                 }
             }
         }

@@ -50,13 +50,15 @@ class FragmentGame: Fragment() {
         super.onDestroyView()
         _binding=null
     }
-    private fun launchFragmentGameResult(result: GameResult) {
+    private fun launchFragmentGameResult(result: GameRelablesult) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, FragmentGameResult.newInstance(result))
             .commit()
     }
     private fun parseArgs() {
-        level = requireArguments().getSerializable(KEY_LEVEL) as Level
+         requireArguments().getParcelable<Level>(KEY_LEVEL)?.let{
+             level = it
+        }
     }
 
     companion object {
@@ -64,7 +66,7 @@ class FragmentGame: Fragment() {
         fun newInstance(level: Level): FragmentGame{
             return FragmentGame().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_LEVEL, level)
+                    putParcelable(KEY_LEVEL, level)
                 }
             }
         }
