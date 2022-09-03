@@ -36,21 +36,14 @@ class FragmentGame: Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[GameViewModel::class.java]
-        val repository = GameRepositoryImpl
-        binding.tvOption1.setOnClickListener {
-            launchFragmentGameResult(GameResult(
-                true,
-                5,
-                6,
-                repository.getGameSettings(level)
-            ))
-        }
+
 
     }
-
+private fun observeViewModel(){
+    viewModel.question.observe(viewLifecycleOwner){
+        binding.tvSum.text = it.sum.toString()
+    }
+}
     override fun onDestroyView() {
         super.onDestroyView()
         _binding=null
