@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.satcomposition.R
 import com.example.satcomposition.data.GameRepositoryImpl
 import com.example.satcomposition.databinding.FragmentGameBinding
@@ -15,6 +16,7 @@ import com.example.satcomposition.domain.entity.Level
 
 class FragmentGame: Fragment() {
     private lateinit var level : Level
+    private lateinit var viewModel: GameViewModel
     private var _binding : FragmentGameBinding? = null
     private val binding: FragmentGameBinding
         get() = _binding ?: throw RuntimeException("FragmentGameBinding == null")
@@ -34,18 +36,14 @@ class FragmentGame: Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val repository = GameRepositoryImpl
-        binding.tvOption1.setOnClickListener {
-            launchFragmentGameResult(GameResult(
-                true,
-                5,
-                6,
-                repository.getGameSettings(level)
-            ))
-        }
+
 
     }
-
+private fun observeViewModel(){
+    viewModel.question.observe(viewLifecycleOwner){
+        binding.tvSum.text = it.sum.toString()
+    }
+}
     override fun onDestroyView() {
         super.onDestroyView()
         _binding=null
