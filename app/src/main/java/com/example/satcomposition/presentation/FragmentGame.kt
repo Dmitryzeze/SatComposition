@@ -78,9 +78,11 @@ private fun setClickListenerToOption(){
         viewModel.question.observe(viewLifecycleOwner) {
             binding.tvSum.text = it.sum.toString()
             binding.tvLeftNumber.text = it.visibleNumber.toString()
+
             for (i in 0 until tvOptions.size) {
                 tvOptions[i].text = it.options[i].toString()
             }
+
         }
         viewModel.percentOfRightAnswer.observe(viewLifecycleOwner) {
             binding.progressBar.setProgress(it, true)

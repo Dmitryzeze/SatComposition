@@ -2,6 +2,7 @@ package com.example.satcomposition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -81,7 +82,10 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun updateProgress() {
-        val percent = calculatePercentOfRightPercent()
+        val percent = if (countOfQuestions==0){
+            0
+        }
+            else calculatePercentOfRightPercent()
         _percentOfRightAnswer.value = percent
         _progressAnswer.value = String.format(
             context.resources.getString(R.string.progress_answers),
@@ -115,7 +119,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onFinish() {
-                TODO("Not yet implemented")
+                finishGame()
             }
 
         }
