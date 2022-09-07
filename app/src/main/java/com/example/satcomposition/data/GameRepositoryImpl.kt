@@ -1,5 +1,6 @@
 package com.example.satcomposition.data
 
+import android.util.Log
 import com.example.satcomposition.domain.GameRepository
 import com.example.satcomposition.domain.entity.GameSettings
 import com.example.satcomposition.domain.entity.Level
@@ -7,13 +8,13 @@ import com.example.satcomposition.domain.entity.Question
 import kotlin.random.Random
 
 object GameRepositoryImpl : GameRepository {
-    private const val MIN_SUM_VALUE = 2
+    private const val MIN_SUM_VALUE = 7
     private const val MIN_ANSWER_VALUE = 1
 
 
     override fun generateQuestion(maxSumValue: Int, countOfOption: Int): Question {
         val sum = Random.nextInt(MIN_SUM_VALUE,maxSumValue+1)
-        val visibleNumber = Random.nextInt(MIN_SUM_VALUE,sum)
+        val visibleNumber = Random.nextInt(MIN_ANSWER_VALUE,sum)
         val options = HashSet<Int>()
         val rightAnswer = sum-visibleNumber
         options.add(rightAnswer)
