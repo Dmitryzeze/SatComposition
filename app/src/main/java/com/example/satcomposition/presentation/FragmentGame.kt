@@ -20,10 +20,15 @@ import com.example.satcomposition.domain.entity.Level
 
 class FragmentGame : Fragment() {
     private lateinit var level: Level
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(
+        level,
+        requireActivity().application)
+    }
     private val viewModel: GameViewModel by lazy {
         ViewModelProvider(
             this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+            viewModelFactory
         )[GameViewModel::class.java]
     }
     private var _binding: FragmentGameBinding? = null
@@ -61,7 +66,6 @@ class FragmentGame : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        viewModel.startGame(level)
         setClickListenerToOption()
 
     }
@@ -122,7 +126,7 @@ private fun setClickListenerToOption(){
     }
 
     private fun launchFragmentGameResult(result: GameResult) {
-        requireActivity().supportFragmentManager.beginTransaction()
+        parentFragmentManager.beginTransaction()
             .replace(R.id.main_container, FragmentGameResult.newInstance(result))
             .commit()
     }

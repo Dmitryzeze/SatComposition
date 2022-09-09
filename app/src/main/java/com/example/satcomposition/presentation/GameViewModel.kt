@@ -15,9 +15,8 @@ import com.example.satcomposition.domain.entity.Question
 import com.example.satcomposition.domain.interactors.GenerateQuestionInteractor
 import com.example.satcomposition.domain.interactors.GetGameSettingsInteractor
 
-class GameViewModel(application: Application) : AndroidViewModel(application) {
+class GameViewModel(application: Application, private val level: Level) : AndroidViewModel(application) {
     private lateinit var gameSettings: GameSettings
-    private lateinit var level: Level
     private var timer: CountDownTimer? = null
     private var countOfRightAnswer: Int = 0
     private var countOfQuestions: Int = 0
@@ -68,8 +67,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         _question.value = generateQuestionInteractor(maxSum)
     }
 
-    fun startGame(level: Level) {
-        getGameSettings(level)
+    fun startGame() {
+        getGameSettings()
         startTimer()
         generateQuestion()
         updateProgress()
@@ -149,12 +148,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         timer?.cancel()
     }
 
-    private fun getGameSettings(level: Level) {
-        this.level = level
+    private fun getGameSettings() {
         this.gameSettings = getGameSettingsInteractor(level)
         _minPercent.value = gameSettings.minPercentOfRightAnswer
     }
-
+init {
+    startGame()
+}
     companion object {
         private const val MILLIS_IN_SECOND = 1000L
         private const val SECONDS_IN_MINUTES = 60
