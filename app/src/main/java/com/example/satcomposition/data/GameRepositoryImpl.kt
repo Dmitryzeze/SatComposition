@@ -1,6 +1,5 @@
 package com.example.satcomposition.data
 
-import android.util.Log
 import com.example.satcomposition.domain.GameRepository
 import com.example.satcomposition.domain.entity.GameSettings
 import com.example.satcomposition.domain.entity.Level

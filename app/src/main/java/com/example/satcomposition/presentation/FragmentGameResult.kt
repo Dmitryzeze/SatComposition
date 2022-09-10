@@ -1,12 +1,14 @@
 package com.example.satcomposition.presentation
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.navArgs
 import com.example.satcomposition.R
 import com.example.satcomposition.databinding.FragmentGameResultBinding
 import com.example.satcomposition.domain.entity.GameResult
@@ -18,6 +20,7 @@ class FragmentGameResult : Fragment() {
     private val binding: FragmentGameResultBinding
         get() = _binding ?: throw RuntimeException("FragmentGameResultBinding == null")
 
+    @RequiresApi(33)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseArgs()
@@ -102,15 +105,18 @@ class FragmentGameResult : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+    @RequiresApi(33)
+    private fun parseArgs(){
 
-    private fun parseArgs() {
-        requireArguments().getParcelable<GameResult>(GAME_RESULT)?.let {
-            result = it
+            requireArguments().getParcelable(GAME_RESULT,GameResult::class.java)?.let {
+                result = it
+
         }
+
     }
 
     companion object {
-        private const val GAME_RESULT = "result"
+        const val GAME_RESULT = "result"
         fun newInstance(result: GameResult): FragmentGameResult {
             return FragmentGameResult().apply {
                 arguments = Bundle().apply {

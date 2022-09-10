@@ -2,7 +2,6 @@ package com.example.satcomposition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -67,7 +66,7 @@ class GameViewModel(application: Application, private val level: Level) : Androi
         _question.value = generateQuestionInteractor(maxSum)
     }
 
-    fun startGame() {
+    private fun startGame() {
         getGameSettings()
         startTimer()
         generateQuestion()

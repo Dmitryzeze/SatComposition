@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/welcomeFragment">
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.satcomposition.presentation.WelcomeFragment"
+        android:label="WelcomeFragment" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_fragmentChooseLevel"
+            app:destination="@id/fragmentChooseLevel" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentChooseLevel"
+        android:name="com.example.satcomposition.presentation.FragmentChooseLevel"
+        android:label="fragment_choose_level"
+        tools:layout="@layout/fragment_choose_level" >
+        <action
+            android:id="@+id/action_fragmentChooseLevel_to_fragmentGame"
+            app:destination="@id/fragmentGame" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentGame"
+        android:name="com.example.satcomposition.presentation.FragmentGame"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_fragmentGame_to_fragmentGameResult"
+            app:destination="@id/fragmentGameResult" />
+        <argument
+            android:name="level"
+            app:argType="com.example.satcomposition.domain.entity.Level" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentGameResult"
+        android:name="com.example.satcomposition.presentation.FragmentGameResult"
+        android:label="fragment_game_result"
+        tools:layout="@layout/fragment_game_result" >
+        <action
+            android:id="@+id/action_fragmentGameResult_to_fragmentChooseLevel"
+            app:destination="@id/fragmentChooseLevel" />
+    </fragment>
+</navigation>
