@@ -1,6 +1,5 @@
 package com.example.satcomposition.presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,22 +7,25 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.satcomposition.R
 import com.example.satcomposition.databinding.FragmentGameResultBinding
 import com.example.satcomposition.domain.entity.GameResult
-import com.example.satcomposition.domain.entity.Level
 
 class FragmentGameResult : Fragment() {
-    private lateinit var result: GameResult
+    private val result: GameResult by lazy {
+        args.result
+    }
     private var _binding: FragmentGameResultBinding? = null
     private val binding: FragmentGameResultBinding
         get() = _binding ?: throw RuntimeException("FragmentGameResultBinding == null")
+    private val args: FragmentGameResultArgs by navArgs()
 
     @RequiresApi(33)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseArgs()
+
     }
 
     override fun onCreateView(
@@ -63,7 +65,7 @@ class FragmentGameResult : Fragment() {
                 result.gameSettings.minPercentOfRightAnswer
             )
             buttonRetry.setOnClickListener {
-                launchChooseLevelFragment()
+                findNavController().navigate(R.id.action_fragmentGameResult_to_fragmentChooseLevel)
             }
         }
     }
@@ -88,16 +90,10 @@ class FragmentGameResult : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    launchChooseLevelFragment()
+                    findNavController().navigate(R.id.action_fragmentGameResult_to_fragmentChooseLevel)
                 }
             })
 
-    }
-
-    private fun launchChooseLevelFragment() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_container, FragmentGame.newInstance(Level.EASY))
-            .commit()
     }
 
 
@@ -105,24 +101,9 @@ class FragmentGameResult : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    @RequiresApi(33)
-    private fun parseArgs(){
 
-            requireArguments().getParcelable(GAME_RESULT,GameResult::class.java)?.let {
-                result = it
-
-        }
-
-    }
 
     companion object {
         const val GAME_RESULT = "result"
-        fun newInstance(result: GameResult): FragmentGameResult {
-            return FragmentGameResult().apply {
-                arguments = Bundle().apply {
-                    putParcelable(GAME_RESULT, result)
-                }
-            }
-        }
     }
 }

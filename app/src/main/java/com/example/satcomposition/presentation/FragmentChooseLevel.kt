@@ -52,10 +52,4 @@ class FragmentChooseLevel : Fragment() {
         findNavController().navigate(R.id.action_fragmentChooseLevel_to_fragmentGame, args)
     }
 
-    companion object {
-        const val NAME = "FragmentChooseLevel"
-        fun newInstance(): FragmentChooseLevel {
-            return FragmentChooseLevel()
-        }
-    }
 }

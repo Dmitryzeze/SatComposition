@@ -2,12 +2,10 @@ package com.example.satcomposition.presentation
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -25,8 +23,9 @@ class FragmentGame : Fragment() {
     }
     private val viewModelFactory by lazy {
         GameViewModelFactory(
-        level,
-        requireActivity().application)
+            level,
+            requireActivity().application
+        )
     }
     private val viewModel: GameViewModel by lazy {
         ViewModelProvider(
@@ -66,13 +65,14 @@ class FragmentGame : Fragment() {
         setClickListenerToOption()
 
     }
-private fun setClickListenerToOption(){
-    for (tvOption in tvOptions){
-        tvOption.setOnClickListener {
-            viewModel.chooseAnswer(tvOption.text.toString().toInt())
+
+    private fun setClickListenerToOption() {
+        for (tvOption in tvOptions) {
+            tvOption.setOnClickListener {
+                viewModel.chooseAnswer(tvOption.text.toString().toInt())
+            }
         }
     }
-}
 
     private fun observeViewModel() {
         viewModel.question.observe(viewLifecycleOwner) {
@@ -93,18 +93,18 @@ private fun setClickListenerToOption(){
         }
         viewModel.enoughPercentOfRightAnswer.observe(viewLifecycleOwner) {
             val color = getColorByState(it)
-            binding.progressBar.progressTintList  = ColorStateList.valueOf(color)
+            binding.progressBar.progressTintList = ColorStateList.valueOf(color)
         }
-        viewModel.formattedTime.observe(viewLifecycleOwner){
+        viewModel.formattedTime.observe(viewLifecycleOwner) {
             binding.tvTimer.text = it
         }
-        viewModel.minPercent.observe(viewLifecycleOwner){
+        viewModel.minPercent.observe(viewLifecycleOwner) {
             binding.progressBar.secondaryProgress = it
         }
-        viewModel.gameResult.observe(viewLifecycleOwner){
+        viewModel.gameResult.observe(viewLifecycleOwner) {
             launchFragmentGameResult(it)
         }
-        viewModel.progressAnswer.observe(viewLifecycleOwner){
+        viewModel.progressAnswer.observe(viewLifecycleOwner) {
             binding.tvAnswersProgress.text = it
         }
     }
@@ -123,17 +123,10 @@ private fun setClickListenerToOption(){
 
     private fun launchFragmentGameResult(result: GameResult) {
         val args = Bundle().apply { putParcelable(FragmentGameResult.GAME_RESULT, result) }
-        findNavController().navigate(R.id.action_fragmentGame_to_fragmentGameResult,args)
+        findNavController().navigate(R.id.action_fragmentGame_to_fragmentGameResult, args)
     }
 
     companion object {
         const val KEY_LEVEL = "level"
-        fun newInstance(level: Level): FragmentGame {
-            return FragmentGame().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_LEVEL, level)
-                }
-            }
-        }
     }
 }

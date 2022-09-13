@@ -14,7 +14,8 @@ import com.example.satcomposition.domain.entity.Question
 import com.example.satcomposition.domain.interactors.GenerateQuestionInteractor
 import com.example.satcomposition.domain.interactors.GetGameSettingsInteractor
 
-class GameViewModel(application: Application, private val level: Level) : AndroidViewModel(application) {
+class GameViewModel(application: Application, private val level: Level) :
+    AndroidViewModel(application) {
     private lateinit var gameSettings: GameSettings
     private var timer: CountDownTimer? = null
     private var countOfRightAnswer: Int = 0
@@ -80,10 +81,9 @@ class GameViewModel(application: Application, private val level: Level) : Androi
     }
 
     private fun updateProgress() {
-        val percent = if (countOfQuestions==0){
+        val percent = if (countOfQuestions == 0) {
             0
-        }
-            else calculatePercentOfRightPercent()
+        } else calculatePercentOfRightPercent()
         _percentOfRightAnswer.value = percent
         _progressAnswer.value = String.format(
             context.resources.getString(R.string.progress_answers),
@@ -151,9 +151,11 @@ class GameViewModel(application: Application, private val level: Level) : Androi
         this.gameSettings = getGameSettingsInteractor(level)
         _minPercent.value = gameSettings.minPercentOfRightAnswer
     }
-init {
-    startGame()
-}
+
+    init {
+        startGame()
+    }
+
     companion object {
         private const val MILLIS_IN_SECOND = 1000L
         private const val SECONDS_IN_MINUTES = 60
