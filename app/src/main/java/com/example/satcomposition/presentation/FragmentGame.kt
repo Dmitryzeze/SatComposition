@@ -1,7 +1,6 @@
 package com.example.satcomposition.presentation
 
 import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +11,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.satcomposition.R
 import com.example.satcomposition.databinding.FragmentGameBinding
 import com.example.satcomposition.domain.entity.GameResult
@@ -19,7 +20,9 @@ import com.example.satcomposition.domain.entity.Level
 
 
 class FragmentGame : Fragment() {
-    private lateinit var level: Level
+    private val level: Level by lazy {
+        args.level
+    }
     private val viewModelFactory by lazy {
         GameViewModelFactory(
         level,
@@ -45,12 +48,7 @@ class FragmentGame : Fragment() {
             add(binding.tvOption6)
         }
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArgs()
-        Log.d("Arguments", level.toString())
-    }
+    private val args: FragmentGameArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +60,6 @@ class FragmentGame : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
@@ -77,7 +74,6 @@ private fun setClickListenerToOption(){
     }
 }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun observeViewModel() {
         viewModel.question.observe(viewLifecycleOwner) {
             binding.tvSum.text = it.sum.toString()
@@ -126,19 +122,12 @@ private fun setClickListenerToOption(){
     }
 
     private fun launchFragmentGameResult(result: GameResult) {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_container, FragmentGameResult.newInstance(result))
-            .commit()
-    }
-
-    private fun parseArgs() {
-        requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
-            level = it
-        }
+        val args = Bundle().apply { putParcelable(FragmentGameResult.GAME_RESULT, result) }
+        findNavController().navigate(R.id.action_fragmentGame_to_fragmentGameResult,args)
     }
 
     companion object {
-        private const val KEY_LEVEL = "level"
+        const val KEY_LEVEL = "level"
         fun newInstance(level: Level): FragmentGame {
             return FragmentGame().apply {
                 arguments = Bundle().apply {
