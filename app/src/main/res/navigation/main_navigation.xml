@@ -40,7 +40,8 @@
         tools:layout="@layout/fragment_game_result" >
         <action
             android:id="@+id/action_fragmentGameResult_to_fragmentChooseLevel"
-            app:destination="@id/fragmentChooseLevel" />
+            app:destination="@id/fragmentChooseLevel"
+            app:popUpTo="@id/welcomeFragment" />
         <argument
             android:name="result"
             app:argType="com.example.satcomposition.domain.entity.GameResult" />
