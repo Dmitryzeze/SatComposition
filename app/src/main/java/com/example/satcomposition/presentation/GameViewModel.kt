@@ -2,6 +2,7 @@ package com.example.satcomposition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +15,8 @@ import com.example.satcomposition.domain.entity.Question
 import com.example.satcomposition.domain.interactors.GenerateQuestionInteractor
 import com.example.satcomposition.domain.interactors.GetGameSettingsInteractor
 
-class GameViewModel(application: Application, private val level: Level) : AndroidViewModel(application) {
+class GameViewModel(application: Application, private val level: Level) :
+    AndroidViewModel(application) {
     private lateinit var gameSettings: GameSettings
     private var timer: CountDownTimer? = null
     private var countOfRightAnswer: Int = 0
@@ -57,6 +59,12 @@ class GameViewModel(application: Application, private val level: Level) : Androi
 
     private val repository = GameRepositoryImpl
 
+    private fun halfTimeWarning(p0:Long) {
+        if (p0 == gameSettings.gameTimeInSecond * MILLIS_IN_SECOND/2) {
+            Toast.makeText(context,"half time left", Toast.LENGTH_LONG).show()
+
+        }
+    }
 
     private val generateQuestionInteractor = GenerateQuestionInteractor(repository)
     private val getGameSettingsInteractor = GetGameSettingsInteractor(repository)
@@ -80,10 +88,9 @@ class GameViewModel(application: Application, private val level: Level) : Androi
     }
 
     private fun updateProgress() {
-        val percent = if (countOfQuestions==0){
+        val percent = if (countOfQuestions == 0) {
             0
-        }
-            else calculatePercentOfRightPercent()
+        } else calculatePercentOfRightPercent()
         _percentOfRightAnswer.value = percent
         _progressAnswer.value = String.format(
             context.resources.getString(R.string.progress_answers),
@@ -113,6 +120,7 @@ class GameViewModel(application: Application, private val level: Level) : Androi
             (gameSettings.gameTimeInSecond * MILLIS_IN_SECOND), MILLIS_IN_SECOND
         ) {
             override fun onTick(p0: Long) {
+
                 _formattedTime.value = formatTime(p0)
             }
 
@@ -151,9 +159,11 @@ class GameViewModel(application: Application, private val level: Level) : Androi
         this.gameSettings = getGameSettingsInteractor(level)
         _minPercent.value = gameSettings.minPercentOfRightAnswer
     }
-init {
-    startGame()
-}
+
+    init {
+        startGame()
+    }
+
     companion object {
         private const val MILLIS_IN_SECOND = 1000L
         private const val SECONDS_IN_MINUTES = 60

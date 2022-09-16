@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.satcomposition.R
 import com.example.satcomposition.databinding.FragmentChooseLevelBinding
 import com.example.satcomposition.domain.entity.Level
 
@@ -48,14 +47,11 @@ class FragmentChooseLevel : Fragment() {
     }
 
     private fun launchFragmentGame(level: Level) {
-        val args = Bundle().apply { putParcelable(FragmentGame.KEY_LEVEL, level) }
-        findNavController().navigate(R.id.action_fragmentChooseLevel_to_fragmentGame, args)
+        findNavController().navigate(
+            FragmentChooseLevelDirections.actionFragmentChooseLevelToFragmentGame(
+                level
+            )
+        )
     }
 
-    companion object {
-        const val NAME = "FragmentChooseLevel"
-        fun newInstance(): FragmentChooseLevel {
-            return FragmentChooseLevel()
-        }
-    }
 }
