@@ -30,7 +30,7 @@
             android:id="@+id/action_fragmentGame_to_fragmentGameResult"
             app:destination="@id/fragmentGameResult"
             app:popUpTo="@id/fragmentChooseLevel"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <argument
             android:name="level"
             app:argType="com.example.satcomposition.domain.entity.Level" />
@@ -40,10 +40,6 @@
         android:name="com.example.satcomposition.presentation.FragmentGameResult"
         android:label="fragment_game_result"
         tools:layout="@layout/fragment_game_result" >
-        <action
-            android:id="@+id/action_fragmentGameResult_to_fragmentChooseLevel"
-            app:destination="@id/fragmentChooseLevel"
-            app:popUpTo="@id/welcomeFragment" />
         <argument
             android:name="result"
             app:argType="com.example.satcomposition.domain.entity.GameResult" />

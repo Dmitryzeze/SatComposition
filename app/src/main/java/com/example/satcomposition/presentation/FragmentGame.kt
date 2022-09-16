@@ -6,24 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.satcomposition.R
 import com.example.satcomposition.databinding.FragmentGameBinding
 import com.example.satcomposition.domain.entity.GameResult
-import com.example.satcomposition.domain.entity.Level
 
 
 class FragmentGame : Fragment() {
-    private val level: Level by lazy {
-        args.level
-    }
+
     private val viewModelFactory by lazy {
         GameViewModelFactory(
-            level,
+            args.level,
             requireActivity().application
         )
     }
@@ -64,6 +61,7 @@ class FragmentGame : Fragment() {
         observeViewModel()
         setClickListenerToOption()
 
+
     }
 
     private fun setClickListenerToOption() {
@@ -102,9 +100,11 @@ class FragmentGame : Fragment() {
             binding.progressBar.secondaryProgress = it
         }
         viewModel.gameResult.observe(viewLifecycleOwner) {
+            Toast.makeText(context,"sss",Toast.LENGTH_LONG).show()
             launchFragmentGameResult(it)
         }
         viewModel.progressAnswer.observe(viewLifecycleOwner) {
+
             binding.tvAnswersProgress.text = it
         }
     }
@@ -122,11 +122,10 @@ class FragmentGame : Fragment() {
     }
 
     private fun launchFragmentGameResult(result: GameResult) {
-        val args = Bundle().apply { putParcelable(FragmentGameResult.GAME_RESULT, result) }
-        findNavController().navigate(R.id.action_fragmentGame_to_fragmentGameResult, args)
-    }
-
-    companion object {
-        const val KEY_LEVEL = "level"
+        findNavController().navigate(
+            FragmentGameDirections.actionFragmentGameToFragmentGameResult(
+                result
+            )
+        )
     }
 }

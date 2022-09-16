@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -21,6 +20,7 @@ class FragmentGameResult : Fragment() {
     private val binding: FragmentGameResultBinding
         get() = _binding ?: throw RuntimeException("FragmentGameResultBinding == null")
     private val args: FragmentGameResultArgs by navArgs()
+
 
     @RequiresApi(33)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +39,6 @@ class FragmentGameResult : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupClickListeners()
         bindViews()
 
 
@@ -65,7 +64,7 @@ class FragmentGameResult : Fragment() {
                 result.gameSettings.minPercentOfRightAnswer
             )
             buttonRetry.setOnClickListener {
-                findNavController().navigate(R.id.action_fragmentGameResult_to_fragmentChooseLevel)
+                findNavController().popBackStack()
             }
         }
     }
@@ -86,24 +85,10 @@ class FragmentGameResult : Fragment() {
         }
     }
 
-    private fun setupClickListeners() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigate(R.id.action_fragmentGameResult_to_fragmentChooseLevel)
-                }
-            })
-
-    }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-
-    companion object {
-        const val GAME_RESULT = "result"
     }
 }
