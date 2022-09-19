@@ -2,6 +2,7 @@ package com.example.satcomposition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -59,11 +60,9 @@ class GameViewModel(application: Application, private val level: Level) :
 
     private val repository = GameRepositoryImpl
 
-    private fun halfTimeWarning(p0:Long) {
-        if (p0 == gameSettings.gameTimeInSecond * MILLIS_IN_SECOND/2) {
-            Toast.makeText(context,"half time left", Toast.LENGTH_LONG).show()
+    private fun halfTimeWarning(p0: Long, halfTimeIndicate: Boolean) {
 
-        }
+
     }
 
     private val generateQuestionInteractor = GenerateQuestionInteractor(repository)
@@ -119,7 +118,13 @@ class GameViewModel(application: Application, private val level: Level) :
         timer = object : CountDownTimer(
             (gameSettings.gameTimeInSecond * MILLIS_IN_SECOND), MILLIS_IN_SECOND
         ) {
+            private var halfTimeIndicate = false
             override fun onTick(p0: Long) {
+                if ((p0 <= gameSettings.gameTimeInSecond * MILLIS_IN_SECOND / 2) && !halfTimeIndicate) {
+                    halfTimeWarning(p0, halfTimeIndicate)
+                    Toast.makeText(context, "half time left", Toast.LENGTH_LONG).show()
+                    halfTimeIndicate = true
+                }
 
                 _formattedTime.value = formatTime(p0)
             }

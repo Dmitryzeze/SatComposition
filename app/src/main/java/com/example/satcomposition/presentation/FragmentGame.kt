@@ -100,7 +100,6 @@ class FragmentGame : Fragment() {
             binding.progressBar.secondaryProgress = it
         }
         viewModel.gameResult.observe(viewLifecycleOwner) {
-            Toast.makeText(context,"sss",Toast.LENGTH_LONG).show()
             launchFragmentGameResult(it)
         }
         viewModel.progressAnswer.observe(viewLifecycleOwner) {
