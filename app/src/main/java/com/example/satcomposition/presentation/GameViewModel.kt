@@ -2,7 +2,6 @@ package com.example.satcomposition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
